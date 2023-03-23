@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios').default;
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
@@ -25,14 +26,15 @@ public_users.get('/',function (req, res) {
     res.send(JSON.stringify(books,null,4));
   });
 
-  // Get book list (using promise)
-  public_users.get('/books',function (req, res) {
-    const get_books = new Promise((resolve, reject) => {
-        resolve(res.send(JSON.stringify({books}, null, 4)));
-      });
-      get_books.then(() => console.log("Promise for Task 10 resolved"));
+  // Get book list (using async/await)
+public_users.get('/books', async function (req, res) {
+    await new Promise((resolve, reject)=>{
+        resolve(res.send(books));
+    })
+    console.log("Task 10 successful")
   });
 
+       
 // Get book details based on ISBN (sequential code)
 public_users.get('/isbn/:isbn',function (req, res) {
     const isbn=req.params.isbn 
